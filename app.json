@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "hello_world",
-    "slug": "hello_world",
+    "name": "Zapnode",
+    "slug": "zapnode",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "zapnode",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
