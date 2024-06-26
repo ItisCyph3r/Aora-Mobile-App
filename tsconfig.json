@@ -16,7 +16,7 @@
     "app/**/*.ts,tsx,js,jsx",
     "conponents/**/*.ts,tsx,js,jsx",
     "App.tsx",
-    "app.d.ts",
+    "myapp.d.ts",
     "App/**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"

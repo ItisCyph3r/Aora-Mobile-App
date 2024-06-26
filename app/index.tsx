@@ -147,9 +147,12 @@ import { Link, Redirect, router } from "expo-router";
 import images from '@/constants/images'
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomButton from '../components/CustomButton'
-
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 export default function Index() {
+  const { isLoading, isLoggedIn} = useGlobalContext();
+
+  if (!isLoading && isLoggedIn) return <Redirect href='/home' />
   return (
     <SafeAreaView className="h-full bg-primary">
       <ScrollView contentContainerStyle={{ height: '100%'}}>
@@ -177,7 +180,7 @@ export default function Index() {
             />
           </View> 
           <Text className="text-gray-100 mt-7 text-center font-pregular"> 
-            Where creativity meets innovation: embark on a journey  of limitless exploration with Zapnode
+            Where creativity meets innovation: embark on a journey  of limitless exploration with Zapnodee
           </Text>
           <CustomButton 
             title='Continue with Email' 
@@ -185,10 +188,10 @@ export default function Index() {
             handlePress={() => {router.push('/sign-in')}}
           />
         </View>
-        {/* <StatusBar 
+        <StatusBar 
           backgroundColor="#161622"
           style="light"
-        /> */}
+        />
       </ScrollView>
     </SafeAreaView>
   );
