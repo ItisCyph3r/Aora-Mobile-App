@@ -4,34 +4,24 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { images } from '../../constants'
 import SearchInput from '../../components/SearchInput'
 import Trending from '../../components/Trending'
+import VideoCard from '../../components/VideoCard'
 import EmptyState from '../../components/EmptyState'
-import { getAllPosts } from '@/lib/appwrite'
+import { getAllPosts, getLatestPosts } from '@/lib/appwrite'
+import useAppwrite from '@/lib/useAppwrite'
+
 
 const Home = () => {
 
-    const [data, setData] = useState([])
-    const [isLoading, setIsloading] = useState(true)
+    const { data: posts, refetch }  = useAppwrite(getAllPosts)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            setIsloading(true)
+    const { data: latestPosts }  = useAppwrite(getLatestPosts)
 
-            try {
-                const response: any = await getAllPosts();
-                setData(response)
-            } catch (error: any) {
-                Alert.alert('Error', error.message)
-            } finally {
-                setIsloading(false)
-            }
-        }
-        fetchData();
-    }, [])
-    console.log(data);
     const [refreshing, setRefreshing] = useState(false)
 
-    const onRefresh = () => {
+    const onRefresh = async () => {
         setRefreshing(true)
+
+        await refetch()
 
         setRefreshing(false)
     }
@@ -39,19 +29,12 @@ const Home = () => {
         <SafeAreaView className='bg-primary h-full'>
             <FlatList 
                 
-                data={[
-                    { id: 1, name: 'Samuell' }, 
-                    { id: 2, name: 'Momohh'}, 
-                    { id: 3, name: 'Osaze'}
-                ]}
+                data={posts ?? []}
                 keyExtractor={(item: any) => item.$id}
                 renderItem={({ item }) => (
-                    <View className='px-4'>
-                        <Text className='text-3xl text-white'>
-                            {item.name}
-                        </Text>
-                    </View>
-                    
+                    <VideoCard
+                        video={item}
+                    />
                 )}
                 ListHeaderComponent={() => (
                     <View className='my-6 px-4 space-y-6'>
@@ -75,18 +58,12 @@ const Home = () => {
 
                         <SearchInput />
 
-                        <View className='w-full flex-1 pt-5 pb-8'>
-                            <Text className='text-gray-100 text-lg font-pregular mb-3'>
+                        <View className="w-full flex-1 pt-5 pb-8">
+                            <Text className="text-lg font-pregular text-gray-100 mb-3">
                                 Latest Videos
                             </Text>
-                        
 
-                            <Trending posts={[
-                                    { id: 1, name: 'Samuel' }, 
-                                    { id: 2, name: 'Momoh'}, 
-                                    { id: 3, name: 'Osaze'}
-                                ] ?? []}
-                            />
+                            <Trending posts={latestPosts ?? []} />
                         </View>
                     </View>
                 )}
